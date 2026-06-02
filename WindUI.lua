@@ -11826,7 +11826,7 @@ as, at = ap:New(ar)
 		return function(at)
 			at = at or {}
 
-			local au = {
+			local au = setmetatable({
 				Title = at.Title or "UI Library",
 				Author = at.Author,
 				Logo = at.Logo,
@@ -11899,10 +11899,13 @@ as, at = ap:New(ar)
 				PendingFlags = {},
 
 				IsToggleDragging = false,
-			}
+			}, {
+				__index = function(_, k)
+					return at[k]
+				end,
+			})
 
-			setmetatable(au, { __index = at })
-
+			local window = au
 			local windowState = au
 			local auRef = au
 
