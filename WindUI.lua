@@ -11858,7 +11858,7 @@ as, at = ap:New(ar)
 				UIPadding = 14,
 				UIElements = {},
 				CanDropdown = true,
-				Closed = false,
+				Closed = true,
 				Parent = at.Parent,
 				Destroyed = false,
 				IsFullscreen = false,
@@ -12938,6 +12938,9 @@ as, at = ap:New(ar)
 			end
 
 			function au.Open(z)
+				if not au.Closed then
+					return
+				end
 				task.spawn(function()
 					if au.OnOpenCallback then
 						task.spawn(function()
