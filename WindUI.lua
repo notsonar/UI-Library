@@ -12439,7 +12439,6 @@ as, at = ap:New(ar)
 					BackgroundTransparency = 1,
 					TextTransparency = 0.35,
 					AutomaticSize = "XY",
-					Parent = au.UIElements.Main and au.UIElements.Main.Main.Topbar.Left.Title,
 					TextXAlignment = "Left",
 					TextSize = 13,
 					LayoutOrder = 2,
