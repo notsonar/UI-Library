@@ -11897,6 +11897,8 @@ as, at = ap:New(ar)
 				IsToggleDragging = false,
 			}
 
+			local windowState = au
+
 			au.UICorner = au.Radius
 
 			au.TopBarButtonIconSize = au.TopBarButtonIconSize or (au.Topbar.ButtonsType == "Mac" and 11 or 16)
@@ -12436,7 +12438,7 @@ as, at = ap:New(ar)
 			local m
 			local p
 
-			if au.Author then
+			if windowState and windowState.Author then
 				m = createAuthor(au.Author)
 			end
 
@@ -12507,50 +12509,58 @@ as, at = ap:New(ar)
 					}, {
 						b,
 
-						am("Frame", {
-							AutomaticSize = "X",
-							Size = UDim2.new(0, 0, 1, 0),
-							BackgroundTransparency = 1,
-							Name = "Left",
-						}, {
-							am("UIListLayout", {
-								Padding = UDim.new(0, au.UIPadding + 4),
-								SortOrder = "LayoutOrder",
-								FillDirection = "Horizontal",
-								VerticalAlignment = "Center",
-							}),
-							(function()
-								if au.Logo then
-									return am("ImageLabel", {
-										Name = "Logo",
-										BackgroundTransparency = 1,
-										Size = UDim2.fromOffset(18, 18),
-										Image = au.Logo,
-										LayoutOrder = 1,
-										ScaleType = Enum.ScaleType.Fit,
-									})
-								end
-							end)(),
-							am("Frame", {
-								AutomaticSize = "XY",
-								BackgroundTransparency = 1,
-								Name = "Title",
+						(function()
+							local p
+
+							if windowState and windowState.Logo then
+								p = am("ImageLabel", {
+									Name = "Logo",
+									BackgroundTransparency = 1,
+									Size = UDim2.fromOffset(18, 18),
+									Image = windowState.Logo,
+									LayoutOrder = 1,
+									ScaleType = Enum.ScaleType.Fit,
+								})
+							end
+
+							return am("Frame", {
+								AutomaticSize = "X",
 								Size = UDim2.new(0, 0, 1, 0),
-								LayoutOrder = 2,
+								BackgroundTransparency = 1,
+								Name = "Left",
 							}, {
 								am("UIListLayout", {
-									Padding = UDim.new(0, 0),
+									Padding = UDim.new(0, windowState.UIPadding + 4),
 									SortOrder = "LayoutOrder",
-									FillDirection = "Vertical",
+									FillDirection = "Horizontal",
 									VerticalAlignment = "Center",
 								}),
-								r,
-								m,
-							}),
-							am("UIPadding", {
-								PaddingLeft = UDim.new(0, 4),
-							}),
-						}),
+
+								p,
+
+								am("Frame", {
+									AutomaticSize = "XY",
+									BackgroundTransparency = 1,
+									Name = "Title",
+									Size = UDim2.new(0, 0, 1, 0),
+									LayoutOrder = 2,
+								}, {
+									am("UIListLayout", {
+										Padding = UDim.new(0, 0),
+										SortOrder = "LayoutOrder",
+										FillDirection = "Vertical",
+										VerticalAlignment = "Center",
+									}),
+
+									r,
+									m,
+								}),
+
+								am("UIPadding", {
+									PaddingLeft = UDim.new(0, 4),
+								}),
+							})
+						end)(),
 						am("ScrollingFrame", {
 							Name = "Center",
 							BackgroundTransparency = 1,
