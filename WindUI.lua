@@ -877,7 +877,9 @@ d.Heartbeat
 			end
 
 			for z, A in next, v or {} do
-				A.Parent = x
+				if A then
+					A.Parent = x
+				end
 			end
 
 			if u and u.ThemeTag then
