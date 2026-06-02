@@ -11828,8 +11828,8 @@ as, at = ap:New(ar)
 
 			local au = setmetatable({
 				Title = at.Title or "UI Library",
-				Author = at.Author,
-				Logo = at.Logo,
+				Author = at and at.Author or nil,
+				Logo = at and at.Logo or nil,
 				Icon = at.Icon,
 				IconSize = at.IconSize or 22,
 				IconThemed = at.IconThemed,
