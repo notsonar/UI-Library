@@ -877,7 +877,7 @@ d.Heartbeat
 			end
 
 			for z, A in next, v or {} do
-				if A then
+				if typeof(A) == "Instance" then
 					A.Parent = x
 				end
 			end
