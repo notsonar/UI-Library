@@ -11824,12 +11824,19 @@ as, at = ap:New(ar)
 		local as = a.load("y")
 
 		return function(at)
-			at = at or {}
+			-- freeze config: deep-copy so no external mutation or stale closure can touch raw at
+			do
+				local _orig = at or {}
+				at = {}
+				for k, v in pairs(_orig) do
+					at[k] = v
+				end
+			end
 
 			local au = setmetatable({
 				Title = at.Title or "UI Library",
-				Author = at and at.Author or nil,
-				Logo = at and at.Logo or nil,
+				Author = at.Author,
+				Logo = at.Logo,
 				Icon = at.Icon,
 				IconSize = at.IconSize or 22,
 				IconThemed = at.IconThemed,
@@ -11900,9 +11907,7 @@ as, at = ap:New(ar)
 
 				IsToggleDragging = false,
 			}, {
-				__index = function(_, k)
-					return at[k]
-				end,
+				__index = at,
 			})
 
 			local window = au
