@@ -11898,6 +11898,7 @@ as, at = ap:New(ar)
 			}
 
 			local windowState = au
+			local auRef = au
 
 			au.UICorner = au.Radius
 
@@ -12438,7 +12439,7 @@ as, at = ap:New(ar)
 			local m
 			local p
 
-			if windowState and windowState.Author then
+			if auRef and auRef.Author then
 				m = createAuthor(au.Author)
 			end
 
@@ -12512,12 +12513,12 @@ as, at = ap:New(ar)
 						(function()
 							local p
 
-							if windowState and windowState.Logo then
+							if auRef and auRef.Logo then
 								p = am("ImageLabel", {
 									Name = "Logo",
 									BackgroundTransparency = 1,
 									Size = UDim2.fromOffset(18, 18),
-									Image = windowState.Logo,
+									Image = auRef.Logo,
 									LayoutOrder = 1,
 									ScaleType = Enum.ScaleType.Fit,
 								})
@@ -12530,7 +12531,7 @@ as, at = ap:New(ar)
 								Name = "Left",
 							}, {
 								am("UIListLayout", {
-									Padding = UDim.new(0, windowState.UIPadding + 4),
+									Padding = UDim.new(0, auRef.UIPadding + 4),
 									SortOrder = "LayoutOrder",
 									FillDirection = "Horizontal",
 									VerticalAlignment = "Center",
