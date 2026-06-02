@@ -11822,6 +11822,8 @@ as, at = ap:New(ar)
 		local as = a.load("y")
 
 		return function(at)
+			at = at or {}
+
 			local au = {
 				Title = at.Title or "UI Library",
 				Author = at.Author,
@@ -11896,6 +11898,8 @@ as, at = ap:New(ar)
 
 				IsToggleDragging = false,
 			}
+
+			setmetatable(au, { __index = at })
 
 			local windowState = au
 			local auRef = au
@@ -12440,7 +12444,7 @@ as, at = ap:New(ar)
 			local p
 
 			if auRef and auRef.Author then
-				m = createAuthor(au.Author)
+				m = createAuthor(auRef.Author)
 			end
 
 			local r = am("TextLabel", {
@@ -12853,7 +12857,7 @@ as, at = ap:New(ar)
 			function au.SetAuthor(v, x)
 				au.Author = x
 				if not m then
-					m = createAuthor(au.Author)
+					m = createAuthor(au and au.Author or x)
 				end
 
 				m.Text = x
