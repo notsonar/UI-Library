@@ -984,15 +984,24 @@ d.Heartbeat
 				x = { v }
 			end
 
-			local function update(H)
-				if not B or not G.CanDraggable then
-					return
-				end
+			-- latest raw cursor position, updated every InputChanged
+			local latestMousePos = Vector3.new(0, 0, 0)
 
-				local J = H.Position - C
-				p.Tween(v, 0.02, {
-					Position = UDim2.new(F.X.Scale, F.X.Offset + J.X, F.Y.Scale, F.Y.Offset + J.Y),
-				}):Play()
+			-- RenderStepped connection so position updates every frame (60 fps smooth)
+			local renderConn
+			local function startRender()
+				if renderConn then return end
+				renderConn = i:Connect(function()
+					if not B or not G.CanDraggable then return end
+					local J = latestMousePos - C
+					v.Position = UDim2.new(F.X.Scale, F.X.Offset + J.X, F.Y.Scale, F.Y.Offset + J.Y)
+				end)
+			end
+			local function stopRender()
+				if renderConn then
+					renderConn:Disconnect()
+					renderConn = nil
+				end
 			end
 
 			for H, J in pairs(x) do
@@ -1008,6 +1017,9 @@ d.Heartbeat
 							B = true
 							C = L.Position
 							F = v.Position
+							latestMousePos = L.Position
+
+							startRender()
 
 							if z and typeof(z) == "function" then
 								z(true, A)
@@ -1017,6 +1029,7 @@ d.Heartbeat
 								if L.UserInputState == Enum.UserInputState.End then
 									B = false
 									A = nil
+									stopRender()
 
 									if z and typeof(z) == "function" then
 										z(false, nil)
@@ -1033,7 +1046,7 @@ d.Heartbeat
 							L.UserInputType == Enum.UserInputType.MouseMovement
 							or L.UserInputType == Enum.UserInputType.Touch
 						then
-							update(L)
+							latestMousePos = L.Position
 						end
 					end
 				end)
@@ -1045,7 +1058,7 @@ d.Heartbeat
 						H.UserInputType == Enum.UserInputType.MouseMovement
 						or H.UserInputType == Enum.UserInputType.Touch
 					then
-						update(H)
+						latestMousePos = H.Position
 					end
 				end
 			end)
