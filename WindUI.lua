@@ -11825,6 +11825,7 @@ as, at = ap:New(ar)
 			local au = {
 				Title = at.Title or "UI Library",
 				Author = at.Author,
+				Logo = at.Logo,
 				Icon = at.Icon,
 				IconSize = at.IconSize or 22,
 				IconThemed = at.IconThemed,
@@ -12518,6 +12519,18 @@ as, at = ap:New(ar)
 								FillDirection = "Horizontal",
 								VerticalAlignment = "Center",
 							}),
+							(function()
+								if au.Logo then
+									return am("ImageLabel", {
+										Name = "Logo",
+										BackgroundTransparency = 1,
+										Size = UDim2.fromOffset(18, 18),
+										Image = au.Logo,
+										LayoutOrder = 1,
+										ScaleType = Enum.ScaleType.Fit,
+									})
+								end
+							end)(),
 							am("Frame", {
 								AutomaticSize = "XY",
 								BackgroundTransparency = 1,
@@ -13134,6 +13147,7 @@ as, at = ap:New(ar)
 						at.WindUI.TooltipGui:Destroy()
 
 						al.DisconnectAll()
+						at.WindUI.Window = nil
 
 						return
 					end)
@@ -13962,8 +13976,12 @@ function aa.CreateWindow(av, aw)
 	aw.Parent = aa.ScreenGui.Window
 
 	if aa.Window then
-		warn("You cannot create more than one window")
-		return
+		aa:Notify({
+			Title = "Template",
+			Content = "You already have one opened!",
+			Duration = 5
+		})
+		return aa.Window
 	end
 
 	local ay = true
