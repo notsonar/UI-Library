@@ -3458,7 +3458,14 @@ d.Heartbeat
 		local ac = ab.New
 
 		local ad, ae = unpack(a.load("p"))
-		local af = Instance.new("Folder", aa(game:GetService("Workspace")).CurrentCamera)
+		local af = aa(game:GetService("Workspace")).CurrentCamera
+
+		-- anti-debug: flag anyone injecting folders into the camera
+		af.ChildAdded:Connect(function(obj)
+			if obj:IsA("Folder") then
+				DetectedStupidNoob("debug attempt 3")
+			end
+		end)
 
 		local function createAcrylic()
 			local ag = ac("Part", {
@@ -13726,6 +13733,14 @@ local aq = a.load("s")
 local ar = protectgui or (syn and syn.protect_gui) or function() end
 
 local as = gethui and gethui() or (aj or al:WaitForChild("PlayerGui"))
+
+-- destroy any leftover WindUI guis from a previous script execution
+for _, guiName in ipairs({ "WindUI", "WindUI/Notifications", "WindUI/Dropdowns", "WindUI/Tooltips" }) do
+	local existing = as:FindFirstChild(guiName)
+	if existing then
+		existing:Destroy()
+	end
+end
 
 local at = ap("UIScale", {
 	Scale = aa.UIScale,
