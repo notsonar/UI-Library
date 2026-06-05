@@ -12530,9 +12530,9 @@ as, at = ap:New(ar)
 								p = am("ImageLabel", {
 									Name = "Logo",
 									BackgroundTransparency = 1,
-									Size = UDim2.fromOffset(36, 36),
+									Size = UDim2.fromOffset(42, 42),
 									Image = auRef.Logo,
-									ImageTransparency = 0.35,
+									ImageTransparency = 0.55,
 									LayoutOrder = 1,
 									ScaleType = Enum.ScaleType.Fit,
 								})
