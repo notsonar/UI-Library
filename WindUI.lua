@@ -1516,6 +1516,11 @@ d.Heartbeat
 
 			task.spawn(function()
 				task.wait()
+				local tries = 0
+				while r.AbsoluteSize.Y == 0 and tries < 10 do
+					task.wait()
+					tries += 1
+				end
 				e(
 					u,
 					0.45,
@@ -1525,7 +1530,9 @@ d.Heartbeat
 				):Play()
 				e(r, 0.45, { Position = UDim2.new(0, 0, 1, 0) }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				if h.Duration then
-					m.Size = UDim2.new(0, r.DurationFrame.AbsoluteSize.X, 1, 0)
+					local durationWidth = r.DurationFrame.AbsoluteSize.X
+					if durationWidth == 0 then durationWidth = u.AbsoluteSize.X end
+					m.Size = UDim2.new(0, durationWidth, 1, 0)
 					e(
 						r.DurationFrame.Frame,
 						h.Duration,
@@ -13856,33 +13863,34 @@ if not aa.NotificationGui then
 	aa.NotificationGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
 end
 
-function aa.Notify(av, aw)
-	local module = aa.NotificationModule
-	local notif = module and module.New
+local _notifHolder = nil
+local function _getNotifHolder()
+	if not _notifHolder or not _notifHolder.Frame or not _notifHolder.Frame.Parent then
+		_notifHolder = aa.NotificationModule.Init(aa.NotificationGui)
+	end
+	return _notifHolder
+end
 
-	if not module or not module.Init or not aa.NotificationGui then
+function aa.Notify(av, aw)
+	if not aa.NotificationModule or not aa.NotificationGui then
 		warn("WindUI: Notification system not ready")
 		return
 	end
-
-	local holder = module.Init(aa.NotificationGui)
+	local holder = _getNotifHolder()
 	if not holder or not holder.Frame then
 		warn("WindUI: Notification holder missing")
 		return
 	end
-
 	aw.Holder = holder.Frame
 	aw.Window = aa.Window
-
-	return module.New(aw)
+	return aa.NotificationModule.New(aw)
 end
 
 function aa.SetNotificationLower(av, aw)
-	local module = aa.NotificationModule
-	if not module or not module.Init or not aa.NotificationGui then
+	if not aa.NotificationModule or not aa.NotificationGui then
 		return warn("WindUI: Notification system not ready")
 	end
-	local holder = module.Init(aa.NotificationGui)
+	local holder = _getNotifHolder()
 	if holder then
 		holder.SetLower(aw)
 	end
