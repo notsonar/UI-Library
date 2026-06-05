@@ -12530,8 +12530,9 @@ as, at = ap:New(ar)
 								p = am("ImageLabel", {
 									Name = "Logo",
 									BackgroundTransparency = 1,
-									Size = UDim2.fromOffset(28, 28),
+									Size = UDim2.fromOffset(36, 36),
 									Image = auRef.Logo,
+									ImageTransparency = 0.35,
 									LayoutOrder = 1,
 									ScaleType = Enum.ScaleType.Fit,
 								})
@@ -13847,23 +13848,44 @@ function aa.SetParent(au, av)
 end
 math.clamp(aa.TransparencyValue, 0, 1)
 
-local au = aa.NotificationModule.Init(aa.NotificationGui)
+if not aa.NotificationGui then
+	local Players = game:GetService("Players")
+	aa.NotificationGui = Instance.new("ScreenGui")
+	aa.NotificationGui.Name = "WindUI_Notifications"
+	aa.NotificationGui.ResetOnSpawn = false
+	aa.NotificationGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+end
 
 function aa.Notify(av, aw)
-	if not au or not au.Frame then
-		return warn("WindUI: Notification system not initialized")
+	local module = aa.NotificationModule
+	local notif = module and module.New
+
+	if not module or not module.Init or not aa.NotificationGui then
+		warn("WindUI: Notification system not ready")
+		return
 	end
-	aw.Holder = au.Frame
-	if not aw.Holder then
-		return warn("WindUI: Notification Holder is nil")
+
+	local holder = module.Init(aa.NotificationGui)
+	if not holder or not holder.Frame then
+		warn("WindUI: Notification holder missing")
+		return
 	end
+
+	aw.Holder = holder.Frame
 	aw.Window = aa.Window
 
-	return aa.NotificationModule.New(aw)
+	return module.New(aw)
 end
 
 function aa.SetNotificationLower(av, aw)
-	au.SetLower(aw)
+	local module = aa.NotificationModule
+	if not module or not module.Init or not aa.NotificationGui then
+		return warn("WindUI: Notification system not ready")
+	end
+	local holder = module.Init(aa.NotificationGui)
+	if holder then
+		holder.SetLower(aw)
+	end
 end
 
 function aa.SetFont(av, aw)
