@@ -1317,6 +1317,7 @@ d.Heartbeat
 			end
 
 			h.Frame = d("Frame", {
+				Name = "WindUI_NotificationHolder",
 				Position = UDim2.new(1, -29, 0, 56),
 				AnchorPoint = Vector2.new(1, 0),
 				Size = f.Size,
@@ -1478,18 +1479,18 @@ d.Heartbeat
 						m,
 					}),
 				}),
-				d("ImageLabel", {
+				h.Background and d("ImageLabel", {
 					Name = "Background",
 					Image = h.Background,
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
 					ScaleType = "Crop",
-					ImageTransparency = h.BackgroundImageTransparency,
+					ImageTransparency = h.BackgroundImageTransparency or 0,
 				}, {
 					d("UICorner", {
 						CornerRadius = UDim.new(0, f.UICorner),
 					}),
-				}),
+				}) or nil,
 
 				p,
 				j,
