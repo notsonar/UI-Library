@@ -12530,7 +12530,7 @@ as, at = ap:New(ar)
 								p = am("ImageLabel", {
 									Name = "Logo",
 									BackgroundTransparency = 1,
-									Size = UDim2.fromOffset(18, 18),
+									Size = UDim2.fromOffset(28, 28),
 									Image = auRef.Logo,
 									LayoutOrder = 1,
 									ScaleType = Enum.ScaleType.Fit,
@@ -13850,7 +13850,13 @@ math.clamp(aa.TransparencyValue, 0, 1)
 local au = aa.NotificationModule.Init(aa.NotificationGui)
 
 function aa.Notify(av, aw)
+	if not au or not au.Frame then
+		return warn("WindUI: Notification system not initialized")
+	end
 	aw.Holder = au.Frame
+	if not aw.Holder then
+		return warn("WindUI: Notification Holder is nil")
+	end
 	aw.Window = aa.Window
 
 	return aa.NotificationModule.New(aw)
